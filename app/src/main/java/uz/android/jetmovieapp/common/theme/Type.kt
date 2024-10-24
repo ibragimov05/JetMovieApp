@@ -1,4 +1,4 @@
-package uz.android.jetmovieapp.ui.theme
+package uz.android.jetmovieapp.common.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
