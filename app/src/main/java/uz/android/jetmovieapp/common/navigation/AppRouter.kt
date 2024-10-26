@@ -13,20 +13,21 @@ import uz.android.jetmovieapp.feature.main.MainScreen
 import uz.android.jetmovieapp.feature.movie.MovieScreen
 import uz.android.jetmovieapp.feature.movie.MovieViewModel
 import uz.android.jetmovieapp.feature.splash.SplashScreen
+import uz.android.jetmovieapp.feature.watchlist.WatchListViewModel
 
 @Composable
 fun AppRouter() {
     val navController = rememberNavController()
     val homeVM = hiltViewModel<HomeViewModel>()
     val movieVM = hiltViewModel<MovieViewModel>()
-
+    val watchListVM = hiltViewModel<WatchListViewModel>()
 
     NavHost(navController = navController, startDestination = Routes.Main.name) {
         composable(Routes.Splash.name) {
             SplashScreen(navController)
         }
         composable(Routes.Main.name) {
-            MainScreen(navController, homeVM)
+            MainScreen(navController, homeVM, watchListVM)
         }
         composable(Routes.Home.name) {
             HomeScreen(navController, homeVM)
@@ -41,7 +42,9 @@ fun AppRouter() {
             ),
         ) { navBack ->
             navBack.arguments?.getString("movieId").let {
-                MovieScreen(navController, it ?: "", homeVM, movieVM)
+                MovieScreen(
+                    navController, it ?: "", homeVM, movieVM, watchListVM,
+                )
             }
         }
         // TODO: Add more routes here...

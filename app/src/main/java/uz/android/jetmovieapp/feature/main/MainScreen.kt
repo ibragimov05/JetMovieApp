@@ -35,10 +35,15 @@ import uz.android.jetmovieapp.common.theme.AppColors
 import uz.android.jetmovieapp.feature.home.HomeScreen
 import uz.android.jetmovieapp.feature.home.HomeViewModel
 import uz.android.jetmovieapp.feature.search.SearchScreen
+import uz.android.jetmovieapp.feature.watchlist.WatchListViewModel
 import uz.android.jetmovieapp.feature.watchlist.WatchlistScreen
 
 @Composable
-fun MainScreen(navController: NavController, homeVM: HomeViewModel) {
+fun MainScreen(
+    navController: NavController,
+    homeVM: HomeViewModel,
+    watchListVM: WatchListViewModel,
+) {
     val mainVM = hiltViewModel<MainViewModel>()
 
     val tabBoxValues = listOf(
@@ -71,7 +76,7 @@ fun MainScreen(navController: NavController, homeVM: HomeViewModel) {
                     }
 
                     2 -> {
-                        WatchlistScreen(navController)
+                        WatchlistScreen(navController, watchListVM)
                     }
                 }
             }

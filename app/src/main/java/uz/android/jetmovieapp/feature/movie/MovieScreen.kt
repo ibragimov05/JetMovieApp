@@ -1,6 +1,7 @@
 package uz.android.jetmovieapp.feature.movie
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,11 +22,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -33,11 +37,13 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -53,9 +59,11 @@ import uz.android.jetmovieapp.common.constants.Constants
 import uz.android.jetmovieapp.common.constants.SpacerH12
 import uz.android.jetmovieapp.common.constants.SpacerH16
 import uz.android.jetmovieapp.common.constants.SpacerH24
+import uz.android.jetmovieapp.common.models.MovieRoomResult
 import uz.android.jetmovieapp.feature.movie.widgets.AboutMovieContent
 import uz.android.jetmovieapp.feature.movie.widgets.CastContent
 import uz.android.jetmovieapp.feature.movie.widgets.MovieInfoItem
+import uz.android.jetmovieapp.feature.watchlist.WatchListViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,11 +72,16 @@ fun MovieScreen(
     movieId: String,
     homeVM: HomeViewModel,
     movieViewModel: MovieViewModel,
+    watchListViewModel: WatchListViewModel,
 ) {
     val movie = homeVM.getMovieById(movieId)
     var selectedTabIndex = remember { mutableIntStateOf(0) }
     val tabs = listOf("About Movie", "Casts")
     Log.d("MOVIES", "MovieScreen: ${movie?.id}")
+    val initialFavoriteState = movie?.let { watchListViewModel.isFavorite(it.id) } ?: false
+    val isFavorite = remember { mutableStateOf(initialFavoriteState) }
+    val context = LocalContext.current
+
 
     if (movie == null) {
         Surface(
@@ -113,6 +126,45 @@ fun MovieScreen(
                 ),
                 title = {
                     Text(text = "Detail", color = AppColors.white)
+                },
+                actions = {
+                    IconButton(onClick = {
+                        // Update local state immediately
+                        isFavorite.value = !isFavorite.value
+
+                        // Perform database operation
+                        watchListViewModel.toggleFavorite(
+                            MovieRoomResult(
+                                id = movie.id,
+                                adult = movie.adult,
+                                backdrop_path = movie.backdrop_path,
+                                genre_ids = movie.genre_ids.toString(),
+                                original_language = movie.original_language,
+                                original_title = movie.original_title,
+                                overview = movie.overview,
+                                popularity = movie.popularity,
+                                poster_path = movie.poster_path,
+                                release_date = movie.release_date,
+                                title = movie.title,
+                                video = movie.video,
+                                vote_average = movie.vote_average,
+                                vote_count = movie.vote_count,
+                            )
+                        )
+
+                        // Show feedback
+                        Toast.makeText(
+                            context,
+                            if (isFavorite.value) "Added to favorites" else "Removed from favorites",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }) {
+                        Icon(
+                            imageVector = if (isFavorite.value) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                            contentDescription = if (isFavorite.value) "Remove from favorites" else "Add to favorites",
+                            tint = if (isFavorite.value) Color.Red else LocalContentColor.current
+                        )
+                    }
                 },
                 navigationIcon = {
                     IconButton(
