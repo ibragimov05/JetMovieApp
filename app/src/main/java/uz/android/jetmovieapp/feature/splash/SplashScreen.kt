@@ -1,6 +1,5 @@
 package uz.android.jetmovieapp.feature.splash
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.delay
-import okhttp3.Route
 import uz.android.jetmovieapp.R
 import uz.android.jetmovieapp.common.navigation.Routes
 import uz.android.jetmovieapp.common.theme.AppColors
@@ -29,9 +27,10 @@ fun SplashScreen(navController: NavController) {
 
     // Delays 2 seconds and navigates to the next screen
     LaunchedEffect(Unit) {
-        val movies =  homeVM.getMovies(category = "popular");
+        // TODO
+//        val movies =  homeVM.getMovies(category = "popular");
 
-        Log.d("MOVIES", "SplashScreen: $movies")
+//        Log.d("MOVIES", "SplashScreen: $movies")
 
         delay(2000)
         navController.navigate(Routes.Home.name) {

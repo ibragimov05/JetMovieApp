@@ -1,10 +1,5 @@
 package uz.android.jetmovieapp.common.constants
 
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.ui.graphics.Color
-
 
 object Constants {
     const val BASE_URL = "https://api.themoviedb.org/3/"
@@ -12,16 +7,16 @@ object Constants {
 //    const val upcomingRemainingUrl = "discover/movie?include_adult=false&include_video=false&language=en-US&"
 
     // movie category
-    const val nowPlaying = "now_playing"
-    const val popular = "popular"
-    const val topRated = "top_rated"
-    const val upcoming = "discover"
+    const val NOW_PLAYING = "now_playing"
+    const val POPULAR = "popular"
+    const val TOP_RATED = "top_rated"
+    const val UPCOMING = "discover"
 
     val categories = listOf(
-        upcoming,
-        popular,
-        topRated,
-        nowPlaying
+        POPULAR,
+        TOP_RATED,
+        NOW_PLAYING,
+        UPCOMING,
     )
 
     val movieCategories = listOf(
