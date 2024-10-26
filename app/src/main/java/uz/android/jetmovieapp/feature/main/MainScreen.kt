@@ -67,7 +67,7 @@ fun MainScreen(navController: NavController, homeVM: HomeViewModel) {
                     }
 
                     1 -> {
-                        SearchScreen(navController)
+                        SearchScreen(navController, homeVM)
                     }
 
                     2 -> {

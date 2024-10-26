@@ -21,17 +21,7 @@ object Constants {
 
     val movieCategories = listOf(
         "Now playing",
-        "Upcoming",
         "Top rated",
         "Popular"
     )
-
-    // tab box labels
-    val tabBoxLabels = listOf(
-        "Home",
-        "Search",
-        "Watch list"
-    )
-
-//    var allGenres = mutableListOf<Genre>()
 }
